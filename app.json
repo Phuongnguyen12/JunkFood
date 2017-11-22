@@ -1,0 +1,17 @@
+{
+  "expo": {
+    "name": "JunkFood",
+    "version": "0.0.1",
+    "sdkVersion": "22.0.0",
+    "orientation": "portrait",
+    "ios": {
+        "bundleIdentifier": "com.junkfood.junkfood",
+        "buildNumber": "1"
+    },
+    "android": {
+        "package": "com.junkfood.junkfood",
+        "permissions": ["CAMERA"],
+        "versionCode": 10400
+    }
+  }
+}
