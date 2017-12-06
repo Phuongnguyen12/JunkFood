@@ -116,43 +116,46 @@ class HomeScreen extends React.Component {
       }}>
         <ScrollView>
           {/* TODO will need to modify the item inside the ScrollView to set the correct style */}
-          <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
+          <View style={styles.cardview}>
             <Image
-              style={{width:200,height:200}}
-              source={{uri: 'https://facebook.github.io/react/img/logo_og.png'}}
+              style={{width:200,height:200,margin:5}}
+              source={{uri: 'https://images.unsplash.com/photo-1481070414801-51fd732d7184?auto=format&fit=crop&w=1225&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D'}}
             />
-            <Text> Hello world! </Text>
+              <Text style={{fontSize:24, color:'rgba(77,77,77,1)', paddingLeft:20}}>15/12/2017</Text>
           </View>
-          <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
+          <View style={styles.cardview}>
             <Image
-              style={{width:200,height:200}}
-              source={{uri: 'https://facebook.github.io/react/img/logo_og.png'}}
+              style={{width:200,height:200,margin:5}}
+              source={{uri: 'https://images.unsplash.com/photo-1481070555726-e2fe8357725c?auto=format&fit=crop&w=675&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D'}}
             />
-            <Text> Hello world! </Text>
+              <Text style={{fontSize:24, color:'rgba(77,77,77,1)', paddingLeft:20}}>18/12/2017</Text>
           </View>
-          <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
+          <View style={styles.cardview}>
             <Image
-              style={{width:200,height:200}}
-              source={{uri: 'https://facebook.github.io/react/img/logo_og.png'}}
+              style={{width:200,height:200,margin:5}}
+              source={{uri: 'https://images.unsplash.com/photo-1485921198582-a55119c97421?auto=format&fit=crop&w=700&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D'}}
             />
-            <Text> Hello world! </Text>
+              <Text style={{fontSize:24, color:'rgba(77,77,77,1)', paddingLeft:20}}>30/12/2017</Text>
           </View>
-          <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
+          <View style={styles.cardview}>
             <Image
-              style={{width:200,height:200}}
-              source={{uri: 'https://facebook.github.io/react/img/logo_og.png'}}
+              style={{width:200,height:200,margin:5}}
+              source={{uri: 'https://images.unsplash.com/photo-1498557850523-fd3d118b962e?auto=format&fit=crop&w=1350&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D'}}
             />
-            <Text> Hello world! </Text>
+              <Text style={{fontSize:24, color:'rgba(77,77,77,1)', paddingLeft:20}}>31/12/2017</Text>
           </View>
         </ScrollView>
         {/* TODO style the below component as a button for taking picture */}
-        <View style={{height: 50, backgroundColor: 'steelblue'}}>
+
+
+
+        <View style={{height: 80, backgroundColor: 'steelblue'}}>
           <TouchableOpacity
             style={styles.inputContainer1}
             onPress={this._onUploadButton}
           >
-            <Text style={{fontSize:16, color:'rgba(77,77,77,1)', textAlign:'left'}}>Take picture</Text>
-            <Image style={{width:30, height:28, position:'absolute', right:14}} source={require('../assets/camera_icon.png')} />
+            <Text style={{fontSize:18, color:'rgba(77,77,77,1)', textAlign:'left', paddingLeft:10}}>Tap to add an item</Text>
+            <Image style={{width:30, height:28, position:'absolute', right:12}} source={require('../assets/camera_icon.png')} />
           </TouchableOpacity>
           <ActionSheet
             ref={o => this.ActionSheet = o}
@@ -179,12 +182,29 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#fff',
     padding: 10,
-    height: 64,
-    borderRadius: 9,
-    marginLeft: 10,
-    marginRight: 10,
+    height: 60,
+    borderRadius: 30,
+    margin: 10,
+    //marginLeft: 10,
+    //marginRight: 10,
   },
+    cardview: {
+      flex: 1,
+        flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+        marginLeft: 10,
+        marginRight: 10,
+        marginBottom: 10,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.4,
+        shadowRadius: 2,
+        backgroundColor: '#fff',
+        borderRadius:6,
+    },
 });
+
 
 function mapStateToProps(state) {
   const { items } = state;
@@ -192,7 +212,7 @@ function mapStateToProps(state) {
   return {
     items
   }
-};
+}
 
 export default connect(mapStateToProps, {
   createItem,
