@@ -113,7 +113,7 @@ class FormScreen extends React.Component {
       image: photo.uri
     });
 
-    navigate('Home');
+    this.props.navigation.goBack();
   }
 
   render() {
