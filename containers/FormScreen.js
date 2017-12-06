@@ -1,14 +1,26 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { 
   StyleSheet, Text, View, ScrollView, Image,
-  AppState, TouchableOpacity, DeviceEventEmitter
+  AppState, TouchableOpacity, DeviceEventEmitter,
+  Keyboard, TouchableWithoutFeedback, Dimensions, TextInput
 } from 'react-native';
-import {
-  createItem, deleteItem
-} from '../actions/items';
+import { DatePickerDialog } from 'react-native-datepicker-dialog'
+import moment from 'moment';
+import * as itemActions from '../actions/items';
+
+var { height, width } = Dimensions.get('window');
 
 class FormScreen extends React.Component {
+
+  static navigationOptions = ({ navigation }) => ({
+    title: `${navigation.state.params.title}`,
+      headerTitleStyle : {textAlign: 'center',alignSelf:'center'},
+      headerStyle:{
+          backgroundColor:'white',
+      },
+  });
 
   constructor(props) {
     // init starting state of this screen
@@ -16,8 +28,15 @@ class FormScreen extends React.Component {
 
     this.state = {
       refreshing: false,
-      appState: AppState.currentState
+      appState: AppState.currentState,
+      name: '',
+      date: '',
+      dateHolder: null
     };
+
+    this._datePickerCall = this._datePickerCall.bind(this);
+    this._onDatePicked = this._onDatePicked.bind(this);
+    this._onSaveButton = this._onSaveButton.bind(this);
   }
 
   // componentWillReceiveProps(nextProps) {
@@ -56,32 +75,100 @@ class FormScreen extends React.Component {
     this.props.navigation.goBack();
   }
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <View style={{flexDirection:'row', justifyContent:'center'}}>
-          <TouchableOpacity style={styles.closeButton} onPress={this._onBackButton}>
-            <Image style={{width:11, height:18}} source={require('../assets/back-arrow.png')} />
-          </TouchableOpacity>
-          <Text style={styles.title}>New Item</Text>
-        </View>
+  _datePickerCall = () => {
+ 
+    let DateHolder = this.state.DateHolder;
+ 
+    if(!DateHolder || DateHolder == null){
+ 
+      DateHolder = new Date();
+      this.setState({
+        DateHolder: DateHolder
+      });
+    }
+ 
+    //To open the dialog
+    this.refs.datePickerDialog.open({
+ 
+      date: DateHolder,
+ 
+    });
+  }
 
-        {/* Add the form here to fill in title, description, and image */}
-        <Text>Open up App.js to start working on your app!</Text>
-        <Text>Changes you make will automatically reload.</Text>
-        <Text>Shake your phone to open the developer menu.</Text>
-      </View>
+  _onDatePicked = (date) => {
+    this.setState({
+      date: moment(date).format('YYYY-MM-DD')
+    });
+  }
+
+  _onSaveButton = () => {
+    const { itemActions } = this.props;
+    const { name, date } = this.state;
+    const { navigate } = this.props.navigation;
+    const { photo } = this.props.navigation.state.params;
+
+    itemActions.createItem({
+      name,
+      date,
+      image: photo.uri
+    });
+
+    navigate('Home');
+  }
+
+  render() {
+    const { date, name } = this.state;
+    const { photo } = this.props.navigation.state.params;
+    return (
+      <ScrollView>
+        <View style={styles.contentContainer}>
+
+          <Image
+            style={styles.imageHolder}
+            source={{ uri: photo.uri }}>
+          </Image>  
+
+          <View style={{ backgroundColor:'white', borderRadius:9, flexDirection:'column', marginLeft:10, marginRight:10, height: 154, marginBottom:10, paddingLeft:2}}>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+              <View style={styles.inputContainer}>
+                <Text style={{color:'rgba(155,155,155,1)', fontSize:16, fontWeight:'300'}}>Name:</Text>
+                <TextInput
+                  style={styles.textInput}
+                  keyboardType='default'
+                  onChangeText={(name) => this.setState({name})}
+                  value={name}
+                  underlineColorAndroid='rgba(0,0,0,0)'
+                />
+              </View>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+              <View style={[styles.inputContainer, { borderBottomWidth: 0 }]}>
+                <Text style={{color:'rgba(155,155,155,1)', fontSize:16, fontWeight:'300'}}>Expiry date:</Text>
+                <Text style={styles.textInput} onPress={this._datePickerCall}>{date}</Text>
+              </View>
+            </TouchableWithoutFeedback>
+            {/* Place the dialog component at end of your views and assign the references, event handlers to it.*/}
+            <DatePickerDialog ref="datePickerDialog" onDatePicked={this._onDatePicked} />
+          </View>
+
+          <View style={{flex:1, alignItems:'center', marginTop:15,}}>
+            <TouchableOpacity style={styles.button1} onPress={this._onSaveButton}>
+              <Text style={{fontSize:16, color:'#4A4A4A', backgroundColor:'transparent'}}>Save</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ScrollView>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
+  contentContainer: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: 'column',
+    paddingTop: 30,
   },
+
   title: {
     color: 'white',
     fontSize: 16,
@@ -90,20 +177,73 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginTop: 5,
   },
+
+  imageHolder: {
+    width: width-20,
+    height: 200,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
+
+  inputContainer: {
+    width: width-20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: 10,
+    paddingRight: 10,
+    height: 50,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(0,0,0,0.2)',
+  },
+
+  inputContainer1: {
+    flex:1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    padding: 10,
+    height: 64,
+    borderRadius: 9,
+    marginLeft: 10,
+    marginRight: 10,
+  },
+
+  textInput: {
+    flex: 1,
+    height: 50,
+    marginLeft: 30,
+    fontSize: (width>320) ? 15 : 12
+  },
+
   closeButton: {
     position:'absolute',
     left: 20,
     padding: 5,
+  },
+
+  button1: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'white',
+    width: 240,
+    height: 64,
+    borderRadius: 100,
+    zIndex: 100,
   },
 });
 
 function mapStateToProps(state) {
   // const { items } = state;
 
-  return {}
+  return {};
 };
 
-export default connect(mapStateToProps, {
-  createItem,
-  deleteItem
-})(FormScreen);
+function mapDispatchToProps(dispatch) {
+  return {
+    itemActions: bindActionCreators(itemActions, dispatch),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FormScreen);

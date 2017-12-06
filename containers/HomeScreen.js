@@ -1,16 +1,23 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { 
   StyleSheet, Text, View, ScrollView, Image,
   AppState, TouchableOpacity, DeviceEventEmitter
 } from 'react-native';
 import ActionSheet from 'react-native-actionsheet';
 import { ImagePicker } from 'expo';
-import {
-  createItem, deleteItem
-} from '../actions/items';
+import * as itemActions from '../actions/items';
 
 class HomeScreen extends React.Component {
+
+  static navigationOptions = ({ navigation }) => ({
+    title: 'Items',
+      headerTitleStyle : {textAlign: 'center',alignSelf:'center'},
+      headerStyle:{
+          backgroundColor:'white',
+      },
+  });
 
   constructor(props) {
     // init starting state of this screen
@@ -75,7 +82,7 @@ class HomeScreen extends React.Component {
         if(!result.cancelled && result.uri) {
           // image is stored in result.uri
           const { navigate } = this.props.navigation;
-          navigate('Form');
+          navigate('Form', { title: 'New Item', photo: result });
         }
       }).catch(err => {
         console.log(err);
@@ -115,35 +122,19 @@ class HomeScreen extends React.Component {
         justifyContent: 'space-between',
       }}>
         <ScrollView>
-          {/* TODO will need to modify the item inside the ScrollView to set the correct style */}
-          <View style={styles.cardview}>
-            <Image
-              style={{width:200,height:200,margin:5}}
-              source={{uri: 'https://images.unsplash.com/photo-1481070414801-51fd732d7184?auto=format&fit=crop&w=1225&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D'}}
-            />
-              <Text style={{fontSize:24, color:'rgba(77,77,77,1)', paddingLeft:20}}>15/12/2017</Text>
-          </View>
-          <View style={styles.cardview}>
-            <Image
-              style={{width:200,height:200,margin:5}}
-              source={{uri: 'https://images.unsplash.com/photo-1481070555726-e2fe8357725c?auto=format&fit=crop&w=675&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D'}}
-            />
-              <Text style={{fontSize:24, color:'rgba(77,77,77,1)', paddingLeft:20}}>18/12/2017</Text>
-          </View>
-          <View style={styles.cardview}>
-            <Image
-              style={{width:200,height:200,margin:5}}
-              source={{uri: 'https://images.unsplash.com/photo-1485921198582-a55119c97421?auto=format&fit=crop&w=700&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D'}}
-            />
-              <Text style={{fontSize:24, color:'rgba(77,77,77,1)', paddingLeft:20}}>30/12/2017</Text>
-          </View>
-          <View style={styles.cardview}>
-            <Image
-              style={{width:200,height:200,margin:5}}
-              source={{uri: 'https://images.unsplash.com/photo-1498557850523-fd3d118b962e?auto=format&fit=crop&w=1350&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D'}}
-            />
-              <Text style={{fontSize:24, color:'rgba(77,77,77,1)', paddingLeft:20}}>31/12/2017</Text>
-          </View>
+          { 
+            items.map((item) => {
+              return (
+                <View key={item.id} style={styles.cardview}>
+                  <Image
+                    style={{width:200,height:200,margin:5}}
+                    source={{uri: item.image}}
+                  />
+                    <Text style={{fontSize:24, color:'rgba(77,77,77,1)', paddingLeft:20}}>{item.date}</Text>
+                </View>      
+              );
+            })
+          }
         </ScrollView>
         {/* TODO style the below component as a button for taking picture */}
 
@@ -214,7 +205,10 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, {
-  createItem,
-  deleteItem
-})(HomeScreen);
+function mapDispatchToProps(dispatch) {
+  return {
+    itemActions: bindActionCreators(itemActions, dispatch),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);

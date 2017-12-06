@@ -3999,6 +3999,10 @@ moment@2.x.x, moment@^2.10.6:
   version "2.19.2"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.19.2.tgz#8a7f774c95a64550b4c7ebd496683908f9419dbe"
 
+moment@^2.19.3:
+  version "2.19.3"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.19.3.tgz#bdb99d270d6d7fda78cc0fbace855e27fe7da69f"
+
 morgan@~1.6.1:
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/morgan/-/morgan-1.6.1.tgz#5fd818398c6819cba28a7cd6664f292fe1c0bbf2"
@@ -4753,6 +4757,10 @@ react-devtools-core@^2.5.0:
     shell-quote "^1.6.1"
     ws "^2.0.3"
 
+react-moment@^0.6.8:
+  version "0.6.8"
+  resolved "https://registry.yarnpkg.com/react-moment/-/react-moment-0.6.8.tgz#8612a90f3c8afec26fef6844806d84b9d9e3b212"
+
 react-native-actionsheet@^2.2.2:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/react-native-actionsheet/-/react-native-actionsheet-2.3.0.tgz#a9552a356dc5939829062353804d5e5609e8f969"
@@ -4766,6 +4774,10 @@ react-native-animatable@^1.2.3:
 react-native-branch@2.0.0-beta.3:
   version "2.0.0-beta.3"
   resolved "https://registry.yarnpkg.com/react-native-branch/-/react-native-branch-2.0.0-beta.3.tgz#2167af86bbc9f964bd45bd5f37684e5b54965e32"
+
+react-native-datepicker-dialog@^0.0.8:
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/react-native-datepicker-dialog/-/react-native-datepicker-dialog-0.0.8.tgz#397f006029ff70de631b09b281e1b7b6c30c3bc5"
 
 react-native-datepicker@^1.6.0:
   version "1.6.0"
