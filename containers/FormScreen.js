@@ -45,7 +45,7 @@ class FormScreen extends React.Component {
   componentWillMount() {
     DeviceEventEmitter.addListener('goBackListener', (e)=>{
       console.log('event listener');
-      // do tsomething when going back to this screen from another screen
+      // do something when going back to this screen from another screen
     })
   }
 
@@ -69,11 +69,11 @@ class FormScreen extends React.Component {
       console.log('App has come to the foreground!')
     }
     this.setState({appState: nextAppState});
-  }
+  };
 
   _onBackButton = () => {
     this.props.navigation.goBack();
-  }
+  };
 
   _datePickerCall = () => {
  
@@ -93,13 +93,13 @@ class FormScreen extends React.Component {
       date: DateHolder,
  
     });
-  }
+  };
 
   _onDatePicked = (date) => {
     this.setState({
       date: moment(date).format('YYYY-MM-DD')
     });
-  }
+  };
 
   _onSaveButton = () => {
     const { itemActions } = this.props;
@@ -114,7 +114,7 @@ class FormScreen extends React.Component {
     });
 
     this.props.navigation.goBack();
-  }
+  };
 
   render() {
     const { date, name } = this.state;
@@ -131,7 +131,7 @@ class FormScreen extends React.Component {
           <View style={{ backgroundColor:'white', borderRadius:9, flexDirection:'column', marginLeft:10, marginRight:10, height: 154, marginBottom:10, paddingLeft:2}}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
               <View style={styles.inputContainer}>
-                <Text style={{color:'rgba(155,155,155,1)', fontSize:16, fontWeight:'300'}}>Name:</Text>
+                <Text style={{color:'black', fontSize:16, fontWeight:'300'}}>Name:</Text>
                 <TextInput
                   style={styles.textInput}
                   keyboardType='default'
@@ -143,7 +143,7 @@ class FormScreen extends React.Component {
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
               <View style={[styles.inputContainer, { borderBottomWidth: 0 }]}>
-                <Text style={{color:'rgba(155,155,155,1)', fontSize:16, fontWeight:'300'}}>Expiry date:</Text>
+                <Text style={{color:'black', fontSize:16, fontWeight:'300'}}>Expiry date:</Text>
                 <Text style={styles.textInput} onPress={this._datePickerCall}>{date}</Text>
               </View>
             </TouchableWithoutFeedback>
@@ -153,7 +153,7 @@ class FormScreen extends React.Component {
 
           <View style={{flex:1, alignItems:'center', marginTop:15,}}>
             <TouchableOpacity style={styles.button1} onPress={this._onSaveButton}>
-              <Text style={{fontSize:16, color:'#4A4A4A', backgroundColor:'transparent'}}>Save</Text>
+              <Text style={{fontSize:20, fontWeight:'bold',color:'white', backgroundColor:'#158ACB'}}>Save</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -180,9 +180,10 @@ const styles = StyleSheet.create({
 
   imageHolder: {
     width: width-20,
-    height: 200,
+    margin: 10,
+    height: 220,
     flexDirection: 'row',
-    alignItems: 'center',
+    justifyContent: 'center',
     paddingLeft: 10,
     paddingRight: 10,
   },
@@ -226,9 +227,9 @@ const styles = StyleSheet.create({
   button1: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'white',
+    backgroundColor:'#158ACB',
     width: 240,
-    height: 64,
+    height: 60,
     borderRadius: 100,
     zIndex: 100,
   },

@@ -130,13 +130,13 @@ class HomeScreen extends React.Component {
                     style={{width:200,height:200,margin:5}}
                     source={{uri: item.image}}
                   />
-                    <Text style={{fontSize:24, color:'rgba(77,77,77,1)', paddingLeft:20}}>{item.date}</Text>
+                    <Text style={{fontSize:24, color:'#158ACB', fontWeight:'bold', paddingLeft:20}}>{item.date}</Text>
                 </View>      
               );
             })
           }
         </ScrollView>
-        {/* TODO style the below component as a button for taking picture */}
+
 
 
 
