@@ -4,7 +4,6 @@ export function createItem(item) {
 	const newItem = Object.assign({}, {
 		id: guid()
   }, item);
-  console.log(newItem);
   return {
     type: types.ITEM_CREATED,
     item: newItem

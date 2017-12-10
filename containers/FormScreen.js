@@ -1,14 +1,32 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { 
+import {
   StyleSheet, Text, View, ScrollView, Image,
   AppState, TouchableOpacity, DeviceEventEmitter,
   Keyboard, TouchableWithoutFeedback, Dimensions, TextInput
 } from 'react-native';
+import { Notifications } from ‘expo’;
 import { DatePickerDialog } from 'react-native-datepicker-dialog'
 import moment from 'moment';
 import * as itemActions from '../actions/items';
+
+const localNotification = {
+  title: '',
+  body: '', // (string) — body text of the notification.
+  ios: { // (optional) (object) — notification configuration specific to iOS.
+    sound: true // (optional) (boolean) — if true, play a sound. Default: false.
+  },
+  android: {// (optional) (object) — notification configuration specific to Android.
+    sound: true, // (optional) (boolean) — if true, play a sound. Default: false.
+    //icon (optional) (string) — URL of icon to display in notification drawer.
+    //color (optional) (string) — color of the notification icon in notification drawer.
+    priority: 'high', // (optional) (min | low | high | max) — android may present notifications according to the priority, for example a high priority notification will likely to be shown as a heads-up notification.
+    sticky: false, // (optional) (boolean) — if true, the notification will be sticky and not dismissable by user. The notification must be programmatically dismissed. Default: false.
+    vibrate: true // (optional) (boolean or array) — if true, vibrate the device. An array can be supplied to specify the vibration pattern, e.g. - [ 0, 500 ].
+    // link (optional) (string) — external link to open when notification is selected.
+  }
+};
 
 var { height, width } = Dimensions.get('window');
 
@@ -76,22 +94,22 @@ class FormScreen extends React.Component {
   };
 
   _datePickerCall = () => {
- 
+
     let DateHolder = this.state.DateHolder;
- 
+
     if(!DateHolder || DateHolder == null){
- 
+
       DateHolder = new Date();
       this.setState({
         DateHolder: DateHolder
       });
     }
- 
+
     //To open the dialog
     this.refs.datePickerDialog.open({
- 
+
       date: DateHolder,
- 
+
     });
   };
 
@@ -111,6 +129,20 @@ class FormScreen extends React.Component {
       name,
       date,
       image: photo.uri
+    }).then(() => {
+      let t = moment(date, "YYYY-MM-DD");
+      let now = moment();
+      t = t.subtract(2, "days");
+      if (t < now) { t = now; }
+      const schedulingOptions = {
+        time: t, // (date or number) — A Date object representing when to fire the notification or a number in Unix epoch time. Example: (new Date()).getTime() + 1000 is one second from now.
+        repeat: false
+      };
+      const noti = Object.assign({}, localNotification, {
+        title: name,
+        body: 'Expiring soon'
+      });
+      Notifications.scheduleLocalNotificationAsync(noti, schedulingOptions);
     });
 
     this.props.navigation.goBack();
@@ -126,7 +158,7 @@ class FormScreen extends React.Component {
           <Image
             style={styles.imageHolder}
             source={{ uri: photo.uri }}>
-          </Image>  
+          </Image>
 
           <View style={{ backgroundColor:'white', borderRadius:9, flexDirection:'column', marginLeft:10, marginRight:10, height: 154, marginBottom:10, paddingLeft:2}}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
