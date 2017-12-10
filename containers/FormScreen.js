@@ -6,7 +6,7 @@ import {
   AppState, TouchableOpacity, DeviceEventEmitter,
   Keyboard, TouchableWithoutFeedback, Dimensions, TextInput
 } from 'react-native';
-import { Notifications } from ‘expo’;
+import { Notifications } from 'expo';
 import { DatePickerDialog } from 'react-native-datepicker-dialog'
 import moment from 'moment';
 import * as itemActions from '../actions/items';
@@ -125,25 +125,28 @@ class FormScreen extends React.Component {
     const { navigate } = this.props.navigation;
     const { photo } = this.props.navigation.state.params;
 
-    itemActions.createItem({
+    const ret = itemActions.createItem({
       name,
       date,
       image: photo.uri
-    }).then(() => {
+    });
+
+    console.log(ret);
+
+    if (ret && ret.item) {
       let t = moment(date, "YYYY-MM-DD");
-      let now = moment();
+      let now = moment().add(1, 'minute');
       t = t.subtract(2, "days");
       if (t < now) { t = now; }
       const schedulingOptions = {
-        time: t, // (date or number) — A Date object representing when to fire the notification or a number in Unix epoch time. Example: (new Date()).getTime() + 1000 is one second from now.
-        repeat: false
+        time: new Date(t.format("YYYY-MM-DDTHH:mm:ssZ")) // (date or number) — A Date object representing when to fire the notification or a number in Unix epoch time. Example: (new Date()).getTime() + 1000 is one second from now.
       };
       const noti = Object.assign({}, localNotification, {
         title: name,
         body: 'Expiring soon'
       });
       Notifications.scheduleLocalNotificationAsync(noti, schedulingOptions);
-    });
+    }
 
     this.props.navigation.goBack();
   };

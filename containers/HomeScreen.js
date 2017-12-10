@@ -6,6 +6,7 @@ import {
   AppState, TouchableOpacity, DeviceEventEmitter
 } from 'react-native';
 import ActionSheet from 'react-native-actionsheet';
+import moment from 'moment';
 import { ImagePicker, Constants, Permissions } from 'expo';
 import * as itemActions from '../actions/items';
 
@@ -128,7 +129,9 @@ class HomeScreen extends React.Component {
 
       <ScrollView>
         {
-          items.map((item) => {
+          items.filter((x) => {
+            return moment(x.date, "YYYY-MM-DD").startOf('day') >= moment().startOf('day');
+          }).map((item) => {
             return (
               <View key={item.id} style={styles.cardview}>
                 <Image
