@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { 
+import {
   StyleSheet, Text, View, ScrollView, Image,
   AppState, TouchableOpacity, DeviceEventEmitter
 } from 'react-native';
@@ -71,7 +71,7 @@ class HomeScreen extends React.Component {
         if(!result.cancelled && result.uri) {
           // image is stored in result.uri
           const { navigate } = this.props.navigation;
-          navigate('Form');
+          navigate('Form', { title: 'New Item', photo: result });
         }
       }).catch(err => {
         console.log(err);
@@ -122,7 +122,7 @@ class HomeScreen extends React.Component {
         justifyContent: 'space-between',
       }}>
         <ScrollView>
-          { 
+          {
             items.map((item) => {
               return (
                 <View key={item.id} style={styles.cardview}>
@@ -131,7 +131,7 @@ class HomeScreen extends React.Component {
                     source={{uri: item.image}}
                   />
                     <Text style={{fontSize:24, color:'rgba(77,77,77,1)', paddingLeft:20}}>{item.date}</Text>
-                </View>      
+                </View>
               );
             })
           }
